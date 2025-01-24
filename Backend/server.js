@@ -10,43 +10,43 @@ dotenv.config();
 const PORT = process.env.PORT || 5000;
 const app = express();
 
+const allowedOrigins = [
+  "https://smart-hub-three.vercel.app",
+  "https://smart-hub-zrd3-7gp6j79pk-piyushnitkkrs-projects.vercel.app",
+];
+
+// Middleware
+app.use(cors({ origin: allowedOrigins, methods: ["GET", "POST"] }));
+app.use(express.json());
+
+// Connect to database
+connectDB()
+  .then(() => console.log("Database connected successfully"))
+  .catch((err) => {
+    console.error("Database connection failed:", err.message);
+    process.exit(1);
+  });
+
 const httpServer = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  console.log(`Allowed origins: ${allowedOrigins.join(", ")}`);
 });
 
-// Dynamic CORS configuration
+// Set up Socket.IO
 const io = new Server(httpServer, {
   cors: {
-    origin: [
-      "https://smart-hub-three.vercel.app",
-      "https://smart-hub-zrd3-7gp6j79pk-piyushnitkkrs-projects.vercel.app"
-    ], // Use "*" temporarily for debugging
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
   },
 });
 
-
-// Set io instance on app
 app.set("io", io);
-
-// Connect to database
-connectDB();
-
-// Middleware
-app.use(cors());
-app.use(express.json());
 
 // Routes
 app.post("/upload", createResource);
-
 app.get("/", getResources);
-
-// Unified "/browse" route
 app.get("/browse", async (req, res) => {
   const { search, department, year, page } = req.query;
-
-  console.log("Received Query Params:", { search, department, year, page });
-
   if (search || department || year || page) {
     await giveSearchResults(req, res);
   } else {
@@ -57,5 +57,13 @@ app.get("/browse", async (req, res) => {
 // Set up chat functionality
 setupChat(io);
 
+// Graceful shutdown
+process.on("SIGINT", async () => {
+  console.log("Shutting down server...");
+  process.exit(0);
+});
 
-
+process.on("SIGTERM", async () => {
+  console.log("Shutting down server...");
+  process.exit(0);
+});
