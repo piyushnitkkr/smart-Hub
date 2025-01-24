@@ -8,17 +8,22 @@ const { setupChat } = require("./control/chatController");
 const { getResources, createResource, giveSearchResults } = require("./control/resourceController");
 
 dotenv.config();
-
+const PORT = process.env.PORT || 5000;
 const app = express();
 const httpServer = createServer(app);
+
+httpServer.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
 
 // Dynamic CORS configuration
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.CLIENT_ORIGIN || "http://localhost:5173", // Use CLIENT_ORIGIN in production
+    origin: "*", // Use "*" temporarily for debugging
     methods: ["GET", "POST"],
   },
 });
+
 
 // Set io instance on app
 app.set("io", io);
@@ -51,8 +56,5 @@ app.get("/browse", async (req, res) => {
 // Set up chat functionality
 setupChat(io);
 
-const PORT = process.env.PORT || 5000;
 
-httpServer.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+
