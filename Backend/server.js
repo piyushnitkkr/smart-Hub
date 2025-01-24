@@ -53,6 +53,6 @@ setupChat(io);
 
 const PORT = process.env.PORT || 5000;
 
-httpServer.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
