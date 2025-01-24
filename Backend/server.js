@@ -5,15 +5,17 @@ const { createServer } = require("http");
 const { Server } = require("socket.io");
 const connectDB = require("./config/db");
 const { setupChat } = require("./control/chatController");
-const { getResources, createResource, giveSearchResults} = require("./control/resourceController");
+const { getResources, createResource, giveSearchResults } = require("./control/resourceController");
 
 dotenv.config();
 
 const app = express();
 const httpServer = createServer(app);
+
+// Dynamic CORS configuration
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_ORIGIN || "http://localhost:5173", // Use CLIENT_ORIGIN in production
     methods: ["GET", "POST"],
   },
 });
@@ -31,7 +33,7 @@ app.use(express.json());
 // Routes
 app.post("/upload", createResource);
 
-app.get("/",getResources);
+app.get("/", getResources);
 
 // Unified "/browse" route
 app.get("/browse", async (req, res) => {
@@ -49,7 +51,7 @@ app.get("/browse", async (req, res) => {
 // Set up chat functionality
 setupChat(io);
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5000;
 
 httpServer.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
