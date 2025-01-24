@@ -14,7 +14,7 @@ function LiveChat() {
   const messagesEndRef = useRef(null)
 
   useEffect(() => {
-    const newSocket = io("https://smart-hub-8hpd.vercel.app")
+    const newSocket = io("https://smart-hub-phi.vercel.app")
     setSocket(newSocket)
 
     newSocket.on("initMessages", (fetchedMessages) => {
