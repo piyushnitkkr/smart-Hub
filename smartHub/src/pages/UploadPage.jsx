@@ -29,7 +29,7 @@ function UploadPage() {
     try {
       setUploading(true)
 
-      const response = await fetch("http://localhost:5000/upload", {
+      const response = await fetch("https://smart-hub-8hpd.vercel.app/upload", {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
