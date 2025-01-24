@@ -1,7 +1,6 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const { createServer } = require("http");
 const { Server } = require("socket.io");
 const connectDB = require("./config/db");
 const { setupChat } = require("./control/chatController");
@@ -10,9 +9,8 @@ const { getResources, createResource, giveSearchResults } = require("./control/r
 dotenv.config();
 const PORT = process.env.PORT || 5000;
 const app = express();
-const httpServer = createServer(app);
 
-httpServer.listen(PORT, () => {
+const httpServer = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 

@@ -29,7 +29,7 @@ function UploadPage() {
     try {
       setUploading(true)
 
-      const response = await fetch("https://smart-hub-gamma.vercel.app/upload", {
+      const response = await fetch("https://smart-hub-three.vercel.app/upload", {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
