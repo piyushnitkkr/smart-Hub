@@ -13,7 +13,7 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: "https://smart-hub-8hpd.vercel.app/",
+    origin: "https://smart-hub-phi.vercel.app",
     methods: ["GET", "POST"],
   },
 });
