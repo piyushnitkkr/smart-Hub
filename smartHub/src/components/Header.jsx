@@ -32,7 +32,7 @@ function Header({ onDataUpdate }) {
       if (selectedYear !== "all") query.append("year", selectedYear)
 
       const queryString = query.toString()
-      const url = queryString ? `https://smart-hub-8hpd.vercel.app/browse?${queryString}` : `https://smart-hub-8hpd.vercel.app/browse`
+      const url = queryString ? `https://smart-hub-phi.vercel.app/browse?${queryString}` : `https://smart-hub-phi.vercel.app.app/browse`
 
       const response = await fetch(url)
       if (!response.ok) {
