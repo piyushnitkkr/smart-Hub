@@ -15,7 +15,7 @@ const httpServer = createServer(app);
 // Dynamic CORS configuration
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.CLIENT_ORIGIN || "http://localhost:5173", // Use CLIENT_ORIGIN in production
+    origin: process.env.CLIENT_ORIGIN, // Use CLIENT_ORIGIN in production
     methods: ["GET", "POST"],
   },
 });
@@ -51,7 +51,7 @@ app.get("/browse", async (req, res) => {
 // Set up chat functionality
 setupChat(io);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT;
 
 httpServer.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
