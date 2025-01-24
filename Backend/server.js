@@ -17,7 +17,10 @@ const httpServer = app.listen(PORT, () => {
 // Dynamic CORS configuration
 const io = new Server(httpServer, {
   cors: {
-    origin: "https://smart-hub-three.vercel.app", // Use "*" temporarily for debugging
+    origin: [
+      "https://smart-hub-three.vercel.app",
+      "https://smart-hub-zrd3-7gp6j79pk-piyushnitkkrs-projects.vercel.app"
+    ], // Use "*" temporarily for debugging
     methods: ["GET", "POST"],
   },
 });
