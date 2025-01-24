@@ -14,7 +14,7 @@ function LiveChat() {
   const messagesEndRef = useRef(null)
 
   useEffect(() => {
-    const newSocket = io("http://localhost:5000")
+    const newSocket = io("https://smart-hub-gamma.vercel.app")
     setSocket(newSocket)
 
     newSocket.on("initMessages", (fetchedMessages) => {

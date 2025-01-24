@@ -9,7 +9,7 @@ function HomePage() {
   useEffect(() => {
     async function fetchMaterials() {
       try {
-        const response = await fetch("http://localhost:5000/browse")
+        const response = await fetch("https://smart-hub-gamma.vercel.app/browse")
         if (!response.ok) {
           throw new Error(`Failed to fetch: ${response.statusText}`)
         }

@@ -1,38 +1,3 @@
-// const messages = []; // In-memory store for chat messages
-
-// /**
-//  * Initializes the chat logic with a Socket.IO server instance.
-//  * @param {import('socket.io').Server} io - The Socket.IO server instance.
-//  */
-// function setupChat(io) {
-//   io.on("connection", (socket) => {
-//     console.log("A user connected:", socket.id);
-
-//     // Send existing messages to the newly connected user
-//     socket.emit("initMessages", messages);
-
-//     // Listen for new chat messages
-//     socket.on("chatMessage", (message) => {
-//       const newMessage = {
-//         content: message.content,
-//         timestamp: message.timestamp || Date.now(),
-//       };
-
-//       // Store the message in memory
-//       messages.push(newMessage);
-
-//       // Broadcast the message to all connected clients
-//       io.emit("newMessage", newMessage);
-//     });
-
-//     socket.on("disconnect", () => {
-//       console.log("User disconnected:", socket.id);
-//     });
-//   });
-// }
-
-// module.exports = { setupChat };
-
 const Message = require("../models/Message");
 
 /**
