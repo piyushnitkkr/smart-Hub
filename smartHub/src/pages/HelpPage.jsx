@@ -14,16 +14,16 @@ function HelpPage() {
             </AccordionTrigger>
             <AccordionContent className="text-gray-300">
               Click the "Upload Notes" button in the header, fill out the form with your material's details, attach your
-              file, and submit. Your material will be available after review.
+              file URL, and submit. Your material will be available after review.
             </AccordionContent>
           </AccordionItem>
 
           <AccordionItem value="download" className="border-b border-purple-600">
             <AccordionTrigger className="text-purple-300 hover:text-purple-400">
-              How do I download materials?
+              How do I Access materials?
             </AccordionTrigger>
             <AccordionContent className="text-gray-300">
-              Browse the available materials, click on the one you're interested in, and use the Download button. You
+              Browse the available materials, click on the one you're interested in, and use the Open Link button. You
               can preview materials before downloading.
             </AccordionContent>
           </AccordionItem>
@@ -33,7 +33,7 @@ function HelpPage() {
               What file formats are supported?
             </AccordionTrigger>
             <AccordionContent className="text-gray-300">
-              We support PDF, DOC, and DOCX files. Files must be under 10MB in size.
+              We support file links.
             </AccordionContent>
           </AccordionItem>
 
