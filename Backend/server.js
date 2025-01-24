@@ -49,7 +49,7 @@ app.get("/browse", async (req, res) => {
 // Set up chat functionality
 setupChat(io);
 
-const PORT = process.env.PORT;
+const PORT = "https://smart-hub-phi.vercel.app";
 
 httpServer.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
