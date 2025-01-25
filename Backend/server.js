@@ -12,6 +12,9 @@ const app = express();
 
 const allowedOrigins = [
   "https://smart-hub-zrd3-7gp6j79pk-piyushnitkkrs-projects.vercel.app",
+  "https://smart-hub-zrd3.vercel.app",
+  "https://smart-hub-three.vercel.app/",
+  "https://smart-in1y1949m-piyushnitkkrs-projects.vercel.app",
 ];
 
 // Middleware
