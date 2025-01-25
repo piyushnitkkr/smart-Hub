@@ -11,14 +11,18 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 
 const allowedOrigins = [
-  "https://smart-hub-zrd3-7gp6j79pk-piyushnitkkrs-projects.vercel.app",
-  "https://smart-hub-zrd3.vercel.app",
-  "https://smart-hub-three.vercel.app/",
-  "https://smart-in1y1949m-piyushnitkkrs-projects.vercel.app",
+  "https://smart-hub-zrd3.vercel.app", // Frontend origin
+  "https://smart-hub-three.vercel.app", // Backend origin
 ];
 
 // Middleware
-app.use(cors({ origin: allowedOrigins, methods: ["GET", "POST"] }));
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: ["GET", "POST"],
+    credentials: true, // Allow credentials like cookies
+  })
+);
 app.use(express.json());
 
 // Connect to database
@@ -39,7 +43,13 @@ const io = new Server(httpServer, {
   cors: {
     origin: allowedOrigins,
     methods: ["GET", "POST"],
+    credentials: true,
   },
+});
+
+io.use((socket, next) => {
+  console.log("Socket handshake headers:", socket.handshake.headers.origin);
+  next();
 });
 
 app.set("io", io);
