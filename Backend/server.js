@@ -11,7 +11,6 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 
 const allowedOrigins = [
-  "https://smart-hub-three.vercel.app",
   "https://smart-hub-zrd3-7gp6j79pk-piyushnitkkrs-projects.vercel.app",
 ];
 
