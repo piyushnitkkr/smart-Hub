@@ -11,8 +11,8 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 
 const allowedOrigins = [
-  "https://smart-hub-zrd3.vercel.app", // Frontend origin
-  "https://smart-hub-three.vercel.app", // Backend origin
+  "http://smart-hub-zrd3.vercel.app", // Frontend origin
+  "http://smart-hub-three.vercel.app", // Backend origin
 ];
 
 // Middleware
