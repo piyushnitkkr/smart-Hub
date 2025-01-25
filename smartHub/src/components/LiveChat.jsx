@@ -14,22 +14,10 @@ function LiveChat() {
   const messagesEndRef = useRef(null)
 
   useEffect(() => {
-    const newSocket = io("https://smart-hub-three.vercel.app", {
-      transports: ["websocket", "polling"], // Allow WebSocket and polling
+    const newSocket = io("https://smart-hub-three.vercel.app",{
+    transports: ["websocket", "polling"], // Allow WebSocket and polling
     })
     setSocket(newSocket)
-
-    newSocket.on("connect", () => {
-      console.log("Connected to the server")
-    })
-
-    newSocket.on("connect_error", (err) => {
-      console.error("Connection error:", err.message)
-    })
-
-    newSocket.on("disconnect", () => {
-      console.warn("Disconnected from the server")
-    })
 
     newSocket.on("initMessages", (fetchedMessages) => {
       setMessages(fetchedMessages)
@@ -39,10 +27,7 @@ function LiveChat() {
       setMessages((prevMessages) => [...prevMessages, message])
     })
 
-    return () => {
-      newSocket.disconnect()
-      console.log("Socket disconnected")
-    }
+    return () => newSocket.close()
   }, [])
 
   useEffect(() => {
@@ -84,16 +69,14 @@ function LiveChat() {
         {isOpen && (
           <CardContent className="bg-[#0f172a] p-4">
             <div className="space-y-4 h-64 overflow-y-auto mb-4 scrollbar-thin scrollbar-thumb-purple-600 scrollbar-track-transparent">
-              {messages.map((msg) => (
-                <div key={msg._id || msg.timestamp} className="flex gap-2">
+              {messages.map((msg, index) => (
+                <div key={index} className="flex gap-2">
                   <Avatar className="border border-purple-600">
                     <AvatarFallback className="bg-purple-900 text-purple-200">U</AvatarFallback>
                   </Avatar>
                   <div className="flex-1">
                     <p className="text-sm text-gray-300">{msg.content}</p>
-                    <span className="text-xs text-purple-400">
-                      {new Date(msg.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                    </span>
+                    <span className="text-xs text-purple-400">{new Date(msg.timestamp).toLocaleTimeString()}</span>
                   </div>
                 </div>
               ))}
@@ -106,12 +89,7 @@ function LiveChat() {
                 placeholder="Type a message..."
                 className="flex-grow bg-[#1a2234] border-purple-600 text-gray-200 placeholder:text-gray-400"
               />
-              <Button
-                type="submit"
-                size="icon"
-                className="bg-purple-600 hover:bg-purple-700 text-white disabled:opacity-50"
-                disabled={!newMessage.trim()}
-              >
+              <Button type="submit" size="icon" className="bg-purple-600 hover:bg-purple-700 text-white">
                 <Send className="h-4 w-4" />
               </Button>
             </form>
