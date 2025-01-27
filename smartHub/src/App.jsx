@@ -19,7 +19,6 @@ function Layout({ children }) {
     <div className="flex flex-col min-h-screen min-w-screen bg-[#0f172a] text-white overflow-x-hidden">
       {showLogo && <LogoHead />}
       <main className="flex-grow">{children}</main>
-      <LiveChat />
       <Footer />
     </div>
   )
