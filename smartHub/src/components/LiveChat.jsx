@@ -14,7 +14,7 @@ function LiveChat() {
   const messagesEndRef = useRef(null)
 
   useEffect(() => {
-    const newSocket = io("https://smart-hub-three.vercel.app",{
+    const newSocket = io("https://smart-hub-three.vercel.app/socket.io/?EIO=4&transport=polling&t=horsmh74&sid=LfWYMjsfS0E7-W-jAAAG",{
      transports: ["polling", "websocket"], // Enable fallback to polling
     })
     setSocket(newSocket)
