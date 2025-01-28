@@ -14,7 +14,11 @@ function LiveChat() {
   const messagesEndRef = useRef(null)
 
   useEffect(() => {
-    const newSocket = io("https://smart-hub-three.vercel.app")
+    const newSocket = io("https://smart-hub-three.vercel.app",{
+     transports: ["polling", "websocket"], // Enable fallback to polling
+     reconnectionAttempts: 5, // Retry 5 times before giving up
+     reconnectionDelay: 2000,
+    })
     setSocket(newSocket)
 
     newSocket.on("initMessages", (fetchedMessages) => {
@@ -87,7 +91,7 @@ function LiveChat() {
                 placeholder="Type a message..."
                 className="flex-grow bg-[#1a2234] border-purple-600 text-gray-200 placeholder:text-gray-400"
               />
-              <Button type="submit" size="icon" className="bg-purple-600 hover:bg-purple-700 text-white">
+              <Button type="submit" size="icon" className="bg-purple-600 hover:bg-purple-700 text-white" disabled={!newMessage.trim()}>
                 <Send className="h-4 w-4" />
               </Button>
             </form>
