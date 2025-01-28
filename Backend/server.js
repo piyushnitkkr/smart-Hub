@@ -12,8 +12,7 @@ const app = express();
 
 const allowedOrigins = [
   "https://smart-hub-zrd3.vercel.app", // Frontend origin
-  "https://smart-hub-three.vercel.app",
-  "https://smart-hub-three.vercel.app/socket.io/?EIO=4&transport=polling&t=horsmh74&sid=LfWYMjsfS0E7-W-jAAAG",// Backend origin
+  "https://smart-hub-k3z0.onrender.com",
 ];
 
 // Middleware
