@@ -18,7 +18,7 @@ const allowedOrigins = [
 // Middleware
 app.use(
   cors({
-    origin: "*",
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
   })
 );
@@ -40,7 +40,7 @@ const httpServer = app.listen(PORT, () => {
 // Set up Socket.IO
 const io = new Server(httpServer, {
   cors: {
-    origin: "*",
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
     credentials: true,
   },
