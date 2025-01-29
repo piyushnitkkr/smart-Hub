@@ -59,7 +59,7 @@ function Header({ onDataUpdate }) {
       <div className="container mx-auto px-4 py-4">
         <div className="flex flex-col md:flex-row items-center justify-between">
           <Link to="/" className="flex items-center gap-2 mb-4 md:mb-0">
-            <img src="/Smart.png" alt="Logo" className="w-10 h-10 rounded-[50%]" />
+            <img src="/download.png" alt="Logo" className="w-10 h-10 rounded-[50%]" />
             <h1 className="text-xl font-bold text-purple-400">Smart Study Hub</h1>
           </Link>
           <div className="flex-1 max-w-xl mx-4">
