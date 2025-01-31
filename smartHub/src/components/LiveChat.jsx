@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { io } from "socket.io-client"
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
@@ -14,8 +14,8 @@ function LiveChat() {
   const messagesEndRef = useRef(null)
 
   useEffect(() => {
-    const newSocket = io("https://smart-hub-k3z0.onrender.com", {
-      transports: ["polling", "websocket"],
+    const newSocket = io("https://smart-hub-k3z0.onrender.com",{
+     transports: ["polling", "websocket"], // Enable fallback to polling
     })
     setSocket(newSocket)
 
@@ -32,7 +32,7 @@ function LiveChat() {
 
   useEffect(() => {
     scrollToBottom()
-  }, []) //Removed unnecessary dependency: messages
+  }, [messages])
 
   const sendMessage = (e) => {
     e.preventDefault()
@@ -48,12 +48,12 @@ function LiveChat() {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 w-80 z-50 animate-slide-in">
-      <Card className="bg-surface border border-primary-600">
-        <CardHeader className="flex flex-row items-center justify-between bg-background border-b border-primary-600">
+    <div className="fixed bottom-4 right-4 w-80 z-50">
+      <Card className="bg-[#0f172a] border border-purple-600">
+        <CardHeader className="flex flex-row items-center justify-between bg-[#1a2234] border-b border-purple-600">
           <div className="flex items-center gap-2">
-            <h3 className="font-semibold text-primary-300">Live Chat</h3>
-            <span className="text-xs bg-primary-900 text-primary-200 px-1.5 py-0.5 rounded animate-pulse-slow">
+            <h3 className="font-semibold text-purple-400">Live Chat</h3>
+            <span className="text-xs bg-purple-900 text-purple-200 px-1.5 py-0.5 rounded">
               {messages.length} Messages
             </span>
           </div>
@@ -61,22 +61,22 @@ function LiveChat() {
             variant="ghost"
             size="sm"
             onClick={() => setIsOpen(!isOpen)}
-            className="text-primary-400 hover:text-primary-300 hover:bg-primary-900/50"
+            className="text-purple-400 hover:text-purple-300 hover:bg-purple-900/50"
           >
             {isOpen ? "−" : "+"}
           </Button>
         </CardHeader>
         {isOpen && (
-          <CardContent className="bg-surface p-4">
-            <div className="space-y-4 h-64 overflow-y-auto mb-4 scrollbar-thin scrollbar-thumb-primary-600 scrollbar-track-transparent">
+          <CardContent className="bg-[#0f172a] p-4">
+            <div className="space-y-4 h-64 overflow-y-auto mb-4 scrollbar-thin scrollbar-thumb-purple-600 scrollbar-track-transparent">
               {messages.map((msg, index) => (
-                <div key={index} className="flex gap-2 animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
-                  <Avatar className="border border-primary-600">
-                    <AvatarFallback className="bg-primary-900 text-primary-200">U</AvatarFallback>
+                <div key={index} className="flex gap-2">
+                  <Avatar className="border border-purple-600">
+                    <AvatarFallback className="bg-purple-900 text-purple-200">U</AvatarFallback>
                   </Avatar>
                   <div className="flex-1">
-                    <p className="text-sm text-text-primary">{msg.content}</p>
-                    <span className="text-xs text-primary-400">{new Date(msg.timestamp).toLocaleTimeString()}</span>
+                    <p className="text-sm text-gray-300">{msg.content}</p>
+                    <span className="text-xs text-purple-400">{new Date(msg.timestamp).toLocaleTimeString()}</span>
                   </div>
                 </div>
               ))}
@@ -87,14 +87,9 @@ function LiveChat() {
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
                 placeholder="Type a message..."
-                className="flex-grow bg-background border-primary-600 text-text-primary placeholder:text-text-secondary"
+                className="flex-grow bg-[#1a2234] border-purple-600 text-gray-200 placeholder:text-gray-400"
               />
-              <Button
-                type="submit"
-                size="icon"
-                className="bg-secondary hover:bg-secondary-600 text-text-primary"
-                disabled={!newMessage.trim()}
-              >
+              <Button type="submit" size="icon" className="bg-purple-600 hover:bg-purple-700 text-white" disabled={!newMessage.trim()}>
                 <Send className="h-4 w-4" />
               </Button>
             </form>
@@ -106,4 +101,3 @@ function LiveChat() {
 }
 
 export default LiveChat
-
