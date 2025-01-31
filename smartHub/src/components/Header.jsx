@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { Search } from "lucide-react"
 import { Input } from "./ui/input"
 import { Button } from "./ui/button"
@@ -14,14 +14,14 @@ function Header({ onDataUpdate }) {
   useEffect(() => {
     const debouncedFetch = debounce(() => {
       fetchFilteredData()
-    }, 300) // Delay the fetch by 300ms
+    }, 300)
 
     debouncedFetch()
 
     return () => {
-      debouncedFetch.cancel() // Cleanup the debounce on unmount
+      debouncedFetch.cancel()
     }
-  }, [searchTerm, selectedBranch, selectedYear])
+  }, []) // Only run when the component mounts and unmounts
 
   const fetchFilteredData = async () => {
     try {
@@ -32,7 +32,9 @@ function Header({ onDataUpdate }) {
       if (selectedYear !== "all") query.append("year", selectedYear)
 
       const queryString = query.toString()
-      const url = queryString ? `https://smart-hub-k3z0.onrender.com/browse?${queryString}` : `https://smart-hub-k3z0.onrender.com/browse`
+      const url = queryString
+        ? `https://smart-hub-k3z0.onrender.com/browse?${queryString}`
+        : `https://smart-hub-k3z0.onrender.com/browse`
 
       const response = await fetch(url)
       if (!response.ok) {
@@ -51,16 +53,16 @@ function Header({ onDataUpdate }) {
     if (type === "search") setSearchTerm(value)
     if (type === "department") setSelectedBranch(value)
     if (type === "year") setSelectedYear(value)
-    fetchFilteredData() // Fetch data whenever a filter changes
+    fetchFilteredData()
   }
 
   return (
-    <header className="border-b border-purple-600 bg-[#0f172a]">
+    <header className="border-b border-primary-600 bg-surface animate-fade-in">
       <div className="container mx-auto px-4 py-4">
         <div className="flex flex-col md:flex-row items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 mb-4 md:mb-0">
-            <img src="/download.png" alt="Logo" className="w-10 h-10 rounded-[50%]" />
-            <h1 className="text-xl font-bold text-purple-400">Smart Study Hub</h1>
+          <Link to="/" className="flex items-center gap-2 mb-4 md:mb-0 animate-slide-in">
+            <img src="/download.png" alt="Logo" className="w-10 h-10 rounded-full animate-pulse-slow" />
+            <h1 className="text-xl font-bold text-primary-300">Smart Study Hub</h1>
           </Link>
           <div className="flex-1 max-w-xl mx-4">
             <div className="relative">
@@ -68,26 +70,25 @@ function Header({ onDataUpdate }) {
                 placeholder="Search for notes, subjects..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-8 bg-[#1a2234] border-purple-600 text-gray-200 placeholder:text-gray-400"
+                className="pl-8 bg-background border-primary-600 text-text-primary placeholder:text-text-secondary focus:ring-primary-400"
               />
+              <Search className="absolute left-2 top-2.5 h-4 w-4 text-text-secondary" />
             </div>
           </div>
         </div>
 
-        <div className="flex gap-4 mt-4">
+        <div className="flex gap-4 mt-4 animate-slide-in" style={{ animationDelay: "0.2s" }}>
           <Select value={selectedBranch} onValueChange={(value) => handleFilterChange("department", value)}>
-            <SelectTrigger className="w-[180px] bg-[#1a2234] border-purple-600 text-purple-400">
+            <SelectTrigger className="w-[180px] bg-background border-primary-600 text-text-primary">
               <SelectValue placeholder="All Branches" />
             </SelectTrigger>
-            <SelectContent className="bg-[#1a2234] border-purple-600 text-white">
+            <SelectContent className="bg-surface border-primary-600 text-text-primary">
               <SelectItem value="all">All Branches</SelectItem>
               <SelectItem value="Computer Science">CSE</SelectItem>
               <SelectItem value="Information Technology">IT</SelectItem>
               <SelectItem value="AI">AI</SelectItem>
               <SelectItem value="MNC">MNC</SelectItem>
-              <SelectItem value="Artificial Intelligence & Data Science">
-                AIDS
-              </SelectItem>
+              <SelectItem value="Artificial Intelligence & Data Science">AIDS</SelectItem>
               <SelectItem value="Electronics">Electronics</SelectItem>
               <SelectItem value="Electrical">Electrical</SelectItem>
               <SelectItem value="Civil">Civil</SelectItem>
@@ -100,10 +101,10 @@ function Header({ onDataUpdate }) {
           </Select>
 
           <Select value={selectedYear} onValueChange={(value) => handleFilterChange("year", value)}>
-            <SelectTrigger className="w-[180px] bg-[#1a2234] border-purple-600 text-purple-400">
+            <SelectTrigger className="w-[180px] bg-background border-primary-600 text-text-primary">
               <SelectValue placeholder="All Years" />
             </SelectTrigger>
-            <SelectContent className="bg-[#1a2234] border-purple-600 text-white">
+            <SelectContent className="bg-surface border-primary-600 text-text-primary">
               <SelectItem value="all">All Years</SelectItem>
               <SelectItem value="1">1st Year</SelectItem>
               <SelectItem value="2">2nd Year</SelectItem>
@@ -113,7 +114,10 @@ function Header({ onDataUpdate }) {
           </Select>
 
           <Link to="/upload" className="ml-auto">
-            <Button variant="default" className="bg-purple-600 hover:bg-purple-700 text-white">
+            <Button
+              variant="default"
+              className="bg-secondary hover:bg-secondary-600 text-text-primary animate-pulse-slow"
+            >
               Upload Notes
             </Button>
           </Link>
