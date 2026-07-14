@@ -159,4 +159,4 @@ MIT — free to use, modify, and distribute.
 
 ---
 
-*Built with ❤️ by NIT Kurukshetra students.*
+*Built with ❤️ by NIT Kurukshetra student.*
