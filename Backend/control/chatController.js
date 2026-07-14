@@ -24,6 +24,7 @@ function setupChat(io) {
     socket.on("chatMessage", async (message) => {
       const newMessage = new Message({
         content: message.content,
+        sender: message.sender || "Anonymous",
         timestamp: message.timestamp || Date.now(),
       });
 

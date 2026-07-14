@@ -1,53 +1,80 @@
 import React from "react"
+import { Link } from "react-router-dom"
 
 function Footer() {
   return (
-    <footer className="border-t border-purple-600 bg-gray-900 text-white">
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer className="border-t border-purple-600/40 bg-[#0c1322] text-white">
+      <div className="container mx-auto px-4 py-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+          {/* Brand */}
           <div>
-            <h3 className="font-semibold mb-4 text-purple-400">About</h3>
-            <p className="text-sm text-gray-300">
-              A platform for NIT Kurukshetra students to share and access study materials easily.
+            <div className="flex items-center gap-2 mb-3">
+              <img src="/download.png" alt="Logo" className="w-7 h-7 rounded-full ring-1 ring-purple-500/50" />
+              <span className="font-bold text-purple-300 text-sm">Smart Study Hub</span>
+            </div>
+            <p className="text-xs text-gray-500 leading-relaxed">
+              A platform for NIT Kurukshetra students to share and access study materials — freely, and for everyone.
             </p>
           </div>
+
+          {/* Quick Links */}
           <div>
-            <h3 className="font-semibold mb-4 text-purple-400">Quick Links</h3>
-            <ul className="space-y-2 text-sm text-gray-300">
+            <h3 className="text-xs font-semibold mb-3 text-purple-400 uppercase tracking-wide">Quick Links</h3>
+            <ul className="space-y-2 text-sm text-gray-400">
               <li>
-                <a href="/upload" className="hover:text-purple-400 transition-colors duration-200">
-                  Upload Notes
+                <Link to="/" className="hover:text-purple-300 transition-colors">Home</Link>
+              </li>
+              <li>
+                <Link to="/browse" className="hover:text-purple-300 transition-colors">Browse Material</Link>
+              </li>
+              <li>
+                <Link to="/upload" className="hover:text-purple-300 transition-colors">Upload Notes</Link>
+              </li>
+              <li>
+                <Link to="/help" className="hover:text-purple-300 transition-colors">Help Center</Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Resources */}
+          <div>
+            <h3 className="text-xs font-semibold mb-3 text-purple-400 uppercase tracking-wide">Upload Tips</h3>
+            <ul className="space-y-2 text-xs text-gray-500 leading-relaxed">
+              <li>Use Google Drive for large files</li>
+              <li>Set sharing to "Anyone with link"</li>
+              <li>Include subject &amp; unit in the title</li>
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h3 className="text-xs font-semibold mb-3 text-purple-400 uppercase tracking-wide">Contact</h3>
+            <ul className="space-y-2 text-sm text-gray-400">
+              <li>
+                <a
+                  href="mailto:piyushmittal78331@gmail.com"
+                  className="hover:text-purple-300 transition-colors break-all"
+                >
+                  piyushmittal78331@gmail.com
                 </a>
               </li>
               <li>
-                <a href="/browse" className="hover:text-purple-400 transition-colors duration-200">
-                  Browse Material
-                </a>
-              </li>
-              <li>
-                <a href="/help" className="hover:text-purple-400 transition-colors duration-200">
-                  Help Center
+                <a
+                  href="https://www.linkedin.com/in/piyush-m-79a993280"
+                  className="hover:text-purple-300 transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  LinkedIn →
                 </a>
               </li>
             </ul>
           </div>
-          <div>
-            <h3 className="font-semibold mb-4 text-purple-400">Contact</h3>
-            <p className="text-sm text-gray-300 space-y-2 mb-2">piyushmittal78331@gmail.com</p>
-            <p className="text-sm text-gray-300 space-y-2">
-              <a
-                href="https://www.linkedin.com/in/piyush-m-79a993280"
-                className="hover:text-purple-400 transition-colors duration-200"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                LinkedIn
-              </a>
-            </p>
-          </div>
         </div>
-        <div className="mt-8 pt-8 border-t border-purple-600 text-center text-sm text-gray-400">
-          © 2024 Student Study Hub. All rights reserved.
+
+        <div className="mt-8 pt-6 border-t border-purple-600/20 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-600">
+          <span>© {new Date().getFullYear()} Smart Study Hub. All rights reserved.</span>
+          <span>Built with ❤️ by NIT Kurukshetra students</span>
         </div>
       </div>
     </footer>
@@ -55,4 +82,3 @@ function Footer() {
 }
 
 export default Footer
-
