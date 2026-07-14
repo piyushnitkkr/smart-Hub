@@ -1,89 +1,131 @@
 import React, { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import { Button } from "../components/ui/button"
 import { Input } from "../components/ui/input"
 import { Textarea } from "../components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select"
-import { Upload, CheckCircle2, AlertCircle, Link as LinkIcon } from "lucide-react"
+import { Upload, CheckCircle2, AlertCircle, Link as LinkIcon, ArrowLeft } from "lucide-react"
 
 const BACKEND_URL = "https://smart-hub-k3z0.onrender.com"
 
+const BRANCHES = [
+  { value: "Computer Science",                       label: "CSE"               },
+  { value: "Information Technology",                 label: "IT"                },
+  { value: "AI",                                     label: "AI"                },
+  { value: "MNC",                                    label: "MNC"               },
+  { value: "Artificial Intelligence & Data Science", label: "AIDS"              },
+  { value: "Electronics",                            label: "Electronics"       },
+  { value: "Electrical",                             label: "Electrical"        },
+  { value: "Civil",                                  label: "Civil"             },
+  { value: "Mechanical",                             label: "Mechanical"        },
+  { value: "PIE",                                    label: "PIE"               },
+  { value: "Sustainable Energy",                     label: "Sustainable Energy"},
+  { value: "Micro Electronics & VLSI",               label: "Micro Electronics" },
+  { value: "Robotics & Automation",                  label: "Robotics"          },
+]
+
 function Toast({ type, message }) {
   if (!message) return null
-  const isSuccess = type === "success"
+  const ok = type === "success"
   return (
-    <div
-      className={`flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium border ${
-        isSuccess
-          ? "bg-green-900/40 border-green-600/60 text-green-300"
-          : "bg-red-900/40 border-red-600/60 text-red-300"
-      }`}
-    >
-      {isSuccess ? <CheckCircle2 className="h-5 w-5 shrink-0" /> : <AlertCircle className="h-5 w-5 shrink-0" />}
-      {message}
+    <div className={`flex items-start gap-3 rounded-xl px-4 py-3 text-sm border animate-fade-up ${
+      ok
+        ? "bg-emerald-900/30 border-emerald-700/40 text-emerald-300"
+        : "bg-red-900/30    border-red-700/40    text-red-300"
+    }`}>
+      {ok
+        ? <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0" />
+        : <AlertCircle  className="h-4 w-4 mt-0.5 shrink-0" />
+      }
+      <span>{message}</span>
+    </div>
+  )
+}
+
+function FormField({ label, required, hint, children }) {
+  return (
+    <div className="space-y-1.5">
+      <label className="text-sm font-medium text-slate-300">
+        {label}
+        {required && <span className="text-brand-400 ml-0.5">*</span>}
+      </label>
+      {children}
+      {hint && <p className="text-xs text-slate-600">{hint}</p>}
     </div>
   )
 }
 
 function UploadPage() {
   const navigate = useNavigate()
-  const [uploading, setUploading] = useState(false)
-  const [toast, setToast] = useState({ type: "", message: "" })
-  const [fileUrl, setFileUrl] = useState("")
-  const [branch, setBranch] = useState("")
-  const [year, setYear] = useState("")
-  const [title, setTitle] = useState("")
-  const [description, setDescription] = useState("")
+  const [uploading,    setUploading   ] = useState(false)
+  const [toast,        setToast       ] = useState({ type: "", message: "" })
+  const [fileUrl,      setFileUrl     ] = useState("")
+  const [branch,       setBranch      ] = useState("")
+  const [year,         setYear        ] = useState("")
+  const [title,        setTitle       ] = useState("")
+  const [description,  setDescription ] = useState("")
 
   const showToast = (type, message) => {
     setToast({ type, message })
-    if (type === "success") setTimeout(() => navigate("/browse"), 1500)
+    if (type === "success") setTimeout(() => navigate("/browse"), 1600)
     else setTimeout(() => setToast({ type: "", message: "" }), 5000)
   }
 
-  async function onSubmit(event) {
-    event.preventDefault()
-    if (!branch || !year) {
-      showToast("error", "Please select a branch and year before submitting.")
-      return
-    }
+  async function onSubmit(e) {
+    e.preventDefault()
+    if (!branch || !year) { showToast("error", "Please select a branch and year."); return }
 
     setUploading(true)
     setToast({ type: "", message: "" })
-
     try {
-      const response = await fetch(`${BACKEND_URL}/upload`, {
-        method: "POST",
-        body: JSON.stringify({ title, description, branch, year, fileUrl }),
+      const res = await fetch(`${BACKEND_URL}/upload`, {
+        method:  "POST",
         headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify({ title, description, branch, year, fileUrl }),
       })
-
-      if (response.ok) {
-        showToast("success", "Resource uploaded successfully! Redirecting...")
+      if (res.ok) {
+        showToast("success", "Uploaded successfully! Redirecting to browse…")
       } else {
-        const error = await response.json()
-        showToast("error", error?.error || error?.message || "Failed to upload resource.")
+        const err = await res.json()
+        showToast("error", err?.error || err?.message || "Upload failed.")
       }
     } catch {
-      showToast("error", "Network error — please check your connection and try again.")
+      showToast("error", "Network error — check your connection and try again.")
     } finally {
       setUploading(false)
     }
   }
 
+  const inputClass = "bg-surface-input border-brand-800/50 text-slate-200 placeholder:text-slate-600 rounded-xl focus:border-brand-500/70 focus:ring-1 focus:ring-brand-500/20 transition-all"
+
   return (
-    <div className="min-h-screen bg-[#0f172a] py-12 px-4">
-      <div className="max-w-2xl mx-auto">
+    <div className="min-h-screen bg-[#0a0f1e] py-10 px-4 page-enter">
+      {/* Back link */}
+      <div className="container mx-auto max-w-2xl mb-6">
+        <Link
+          to="/browse"
+          className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-brand-300 transition-colors"
+        >
+          <ArrowLeft className="h-3.5 w-3.5" />
+          Back to Browse
+        </Link>
+      </div>
+
+      <div className="container mx-auto max-w-2xl">
         {/* Page header */}
-        <div className="mb-8 text-center">
-          <span className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-purple-900/50 border border-purple-600/50 mb-4">
-            <Upload className="h-6 w-6 text-purple-400" />
-          </span>
-          <h1 className="text-3xl font-bold text-white">Upload Study Material</h1>
-          <p className="text-gray-500 text-sm mt-2">Share notes, past papers, or any useful resource with your peers.</p>
+        <div className="text-center mb-8">
+          <div className="relative inline-flex mb-4">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-600 to-cyan-500 flex items-center justify-center shadow-brand">
+              <Upload className="h-7 w-7 text-white" />
+            </div>
+            <div className="absolute inset-0 rounded-2xl bg-brand-500/30 blur-lg -z-10" />
+          </div>
+          <h1 className="text-3xl font-extrabold text-white mb-2">Upload Study Material</h1>
+          <p className="text-slate-500 text-sm">Share notes, past papers, or any resource with your peers — instantly.</p>
         </div>
 
-        <div className="bg-[#1a2234] border border-purple-600/40 rounded-2xl p-6 shadow-xl shadow-purple-900/20">
+        {/* Form card */}
+        <div className="glass rounded-2xl p-6 shadow-card">
           {toast.message && (
             <div className="mb-5">
               <Toast type={toast.type} message={toast.message} />
@@ -91,101 +133,90 @@ function UploadPage() {
           )}
 
           <form onSubmit={onSubmit} className="space-y-5">
-            {/* Title */}
-            <div className="space-y-1.5">
-              <label className="text-sm font-medium text-purple-300">Title <span className="text-red-400">*</span></label>
+            <FormField label="Title" required>
               <Input
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
                 placeholder="e.g. Data Structures Notes — Unit 3"
-                className="bg-[#0f172a] border-purple-600/60 text-white placeholder:text-gray-600 focus:border-purple-400 transition-colors"
+                className={inputClass}
               />
-            </div>
+            </FormField>
 
-            {/* Description */}
-            <div className="space-y-1.5">
-              <label className="text-sm font-medium text-purple-300">Description <span className="text-red-400">*</span></label>
+            <FormField label="Description" required>
               <Textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 required
                 rows={3}
-                placeholder="Brief description of what's covered..."
-                className="bg-[#0f172a] border-purple-600/60 text-white placeholder:text-gray-600 focus:border-purple-400 transition-colors resize-none"
+                placeholder="What does this cover? (topics, exam relevance, etc.)"
+                className={`${inputClass} resize-none`}
               />
-            </div>
+            </FormField>
 
-            {/* Branch + Year */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-1.5">
-                <label className="text-sm font-medium text-purple-300">Branch <span className="text-red-400">*</span></label>
-                <Select onValueChange={setBranch} required>
-                  <SelectTrigger className="bg-[#0f172a] border-purple-600/60 text-white hover:border-purple-400 transition-colors">
+              <FormField label="Branch" required>
+                <Select onValueChange={setBranch}>
+                  <SelectTrigger className={inputClass}>
                     <SelectValue placeholder="Select branch" />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#1a2234] border-purple-600 text-white">
-                    <SelectItem value="Computer Science">CSE</SelectItem>
-                    <SelectItem value="Information Technology">IT</SelectItem>
-                    <SelectItem value="AI">AI</SelectItem>
-                    <SelectItem value="MNC">MNC</SelectItem>
-                    <SelectItem value="Artificial Intelligence & Data Science">AIDS</SelectItem>
-                    <SelectItem value="Electronics">Electronics</SelectItem>
-                    <SelectItem value="Electrical">Electrical</SelectItem>
-                    <SelectItem value="Civil">Civil</SelectItem>
-                    <SelectItem value="Mechanical">Mechanical</SelectItem>
-                    <SelectItem value="PIE">PIE</SelectItem>
-                    <SelectItem value="Sustainable Energy">Sustainable Energy</SelectItem>
-                    <SelectItem value="Micro Electronics & VLSI">Micro Electronics</SelectItem>
-                    <SelectItem value="Robotics & Automation">Robotics</SelectItem>
+                  <SelectContent className="bg-surface-card border-brand-800/60 rounded-xl shadow-card text-white">
+                    {BRANCHES.map(({ value, label }) => (
+                      <SelectItem key={value} value={value} className="text-sm hover:bg-brand-900/50 focus:bg-brand-900/50">
+                        {label}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
-              </div>
+              </FormField>
 
-              <div className="space-y-1.5">
-                <label className="text-sm font-medium text-purple-300">Year <span className="text-red-400">*</span></label>
-                <Select onValueChange={setYear} required>
-                  <SelectTrigger className="bg-[#0f172a] border-purple-600/60 text-white hover:border-purple-400 transition-colors">
+              <FormField label="Year" required>
+                <Select onValueChange={setYear}>
+                  <SelectTrigger className={inputClass}>
                     <SelectValue placeholder="Select year" />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#1a2234] border-purple-600 text-white">
-                    <SelectItem value="1">1st Year</SelectItem>
-                    <SelectItem value="2">2nd Year</SelectItem>
-                    <SelectItem value="3">3rd Year</SelectItem>
-                    <SelectItem value="4">4th Year</SelectItem>
+                  <SelectContent className="bg-surface-card border-brand-800/60 rounded-xl shadow-card text-white">
+                    {["1","2","3","4"].map((y) => (
+                      <SelectItem key={y} value={y} className="text-sm hover:bg-brand-900/50 focus:bg-brand-900/50">
+                        {y === "1" ? "1st" : y === "2" ? "2nd" : y === "3" ? "3rd" : "4th"} Year
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
-              </div>
+              </FormField>
             </div>
 
-            {/* File URL */}
-            <div className="space-y-1.5">
-              <label className="text-sm font-medium text-purple-300">
-                File URL <span className="text-red-400">*</span>
-              </label>
+            <FormField
+              label="File URL"
+              required
+              hint="Paste a shareable link (Google Drive, OneDrive, Dropbox…). Make sure it's set to public."
+            >
               <div className="relative">
-                <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500 pointer-events-none" />
+                <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-600 pointer-events-none" />
                 <Input
                   type="url"
                   value={fileUrl}
                   onChange={(e) => setFileUrl(e.target.value)}
                   required
-                  placeholder="https://drive.google.com/..."
-                  className="pl-9 bg-[#0f172a] border-purple-600/60 text-white placeholder:text-gray-600 focus:border-purple-400 transition-colors"
+                  placeholder="https://drive.google.com/…"
+                  className={`${inputClass} pl-9`}
                 />
               </div>
-              <p className="text-xs text-gray-600">Paste a shareable link (Google Drive, OneDrive, etc.)</p>
-            </div>
+            </FormField>
 
             <Button
               type="submit"
               disabled={uploading}
-              className="w-full bg-purple-600 hover:bg-purple-500 text-white py-2.5 shadow-md shadow-purple-900/30 transition-all hover:shadow-purple-700/40 disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full h-11 rounded-xl bg-gradient-to-r from-brand-600 to-brand-500
+                         hover:from-brand-500 hover:to-cyan-500
+                         text-white font-semibold shadow-brand hover:shadow-brand-lg
+                         transition-all duration-300 hover:-translate-y-px
+                         disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
             >
               {uploading ? (
                 <span className="flex items-center gap-2">
                   <span className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  Uploading...
+                  Uploading…
                 </span>
               ) : (
                 <span className="flex items-center gap-2">

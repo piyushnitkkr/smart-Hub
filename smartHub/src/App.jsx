@@ -12,14 +12,15 @@ import "./index.css"
 function App() {
   return (
     <Router>
-      <div className="flex flex-col min-h-screen bg-[#0f172a] text-white overflow-x-hidden">
+      {/* dark class activates dark Radix/shadcn tokens */}
+      <div className="dark flex flex-col min-h-screen bg-[#0a0f1e] text-slate-200 overflow-x-hidden">
         <main className="flex-grow">
           <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/upload" element={<UploadPage />} />
-            <Route path="/browse" element={<BrowsePage />} />
-            <Route path="/help" element={<HelpPage />} />
-            <Route path="*" element={<NotFoundPage />} />
+            <Route path="/"       element={<HomePage />}     />
+            <Route path="/upload" element={<UploadPage />}   />
+            <Route path="/browse" element={<BrowsePage />}   />
+            <Route path="/help"   element={<HelpPage />}     />
+            <Route path="*"       element={<NotFoundPage />} />
           </Routes>
         </main>
         <LiveChat />
